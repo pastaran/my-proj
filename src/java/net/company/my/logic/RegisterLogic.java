@@ -17,7 +17,7 @@ public class RegisterLogic {
     public static String register(String name, String email, String password)
             throws SQLException {
         Connection connection = ConnectionPool.getConnection();
-        UserDAO userDAO = DAOFactoryCreator.getFactory("MYSQL").createUserDAO(connection);
+        UserDAO userDAO = DAOFactoryCreator.getFactory().createUserDAO(connection);
 
         User user = new User();
         user.setName(name);

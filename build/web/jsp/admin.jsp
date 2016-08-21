@@ -29,5 +29,9 @@
             <input type="submit" value="Show readers"/>
         </form>
         <a href="/MyLibrary/jsp/login.jsp">Home</a>
+        <form name="logoutForm" method="POST" action="/MyLibrary/controller">
+            <input type="hidden" name="command" value="logout" />
+            <input type="submit" value="Sign out"/>
+        </form>
     </body>
 </html>

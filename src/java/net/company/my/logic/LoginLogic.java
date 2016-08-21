@@ -16,7 +16,7 @@ public class LoginLogic {
 
     public static User checkLogin(String enterLogin, String enterPass) throws SQLException, Exception {
         Connection connection = ConnectionPool.getConnection();
-        UserDAO userDAO = DAOFactoryCreator.getFactory("MYSQL").createUserDAO(connection);
+        UserDAO userDAO = DAOFactoryCreator.getFactory().createUserDAO(connection);
         User user = null;
 
         try {

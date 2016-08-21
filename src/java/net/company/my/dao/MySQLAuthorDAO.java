@@ -21,7 +21,7 @@ public class MySQLAuthorDAO implements AuthorDAO {
     private static final String GET_AUTHOR_BY_ID = "SELECT * FROM author WHERE id = ?";
     private static final String GET_AUTHOR_BY_NAME = "SELECT * FROM author WHERE name = ?";
     private static final String UPDATE_AUTHOR = "UPDATE author SET name = ? WHERE id = ?";
-    private static final String DELETE_AUTHOR_BY_ID = "DELETE FROM author WHERE id = ?";
+    private static final String REMOVE_AUTHOR_BY_ID = "DELETE FROM author WHERE id = ?";
 
     public MySQLAuthorDAO(Connection connection) {
         this.connection = connection;
@@ -175,11 +175,11 @@ public class MySQLAuthorDAO implements AuthorDAO {
     }
 
     @Override
-    public void deleteAuthorById(int id) {
+    public void removeAuthorById(int id) {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement(DELETE_AUTHOR_BY_ID);
+            statement = connection.prepareStatement(REMOVE_AUTHOR_BY_ID);
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {

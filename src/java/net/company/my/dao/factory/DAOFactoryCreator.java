@@ -6,17 +6,25 @@ package net.company.my.dao.factory;
  */
 public class DAOFactoryCreator {
 
+    private static AbstractDAOFactory factory = null;
+
     private DAOFactoryCreator() {
 
     }
 
-    public static AbstractDAOFactory getFactory(String database) {
+    public static AbstractDAOFactory getFactory() {
+        return factory;
+    }
+
+    public static void initFactory(String database) {
         DatabaseType dbType = DatabaseType.valueOf(database.toUpperCase());
+
         switch (dbType) {
             case MYSQL:
-                return new MySQLDAOFactory();
+                factory = new MySQLDAOFactory();
+                break;
             default:
-                return null;
+                throw new RuntimeException("Unknown database");
         }
     }
 }

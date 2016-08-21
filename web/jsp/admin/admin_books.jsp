@@ -15,7 +15,10 @@
     </head>
     <body>
         <h1>Admin books</h1>
-        <a href="/MyLibrary/jsp/admin/add_book.jsp">Create</a>
+        <form name="goAddForm" method="POST" action="/MyLibrary/controller">
+            <input type="hidden" name="command" value="goaddbook" />
+            <input type="submit" value="Create" />
+        </form>
         <br />
         <button onclick="goBack()" class="margin_updown">Go Back</button>
         <table>
@@ -26,7 +29,6 @@
                 <th>Total</th>
                 <th>Available</th>
             </tr>
-
             <c:forEach var="book" items="${books}">
                 <tr>
                     <td><c:out value="${book.title}"/></td>
@@ -34,6 +36,20 @@
                     <td><c:out value="${book.year}"/></td>
                     <td><c:out value="${book.qtyTotal}"/></td>
                     <td><c:out value="${book.qtyAvailable}"/></td>
+                    <td>
+                        <form name="goUpdateForm" method="POST" action="/MyLibrary/controller">
+                            <input type="hidden" name="command" value="goupdatebook" />
+                            <input type="hidden" name="bookId" value="<c:out value='${book.id}'/>" />
+                            <input type="submit" value="Update" />
+                        </form>
+                    </td>
+                    <td>
+                        <form name="deleteForm" method="POST" action="/MyLibrary/controller">
+                            <input type="hidden" name="command" value="deletebook" />
+                            <input type="hidden" name="bookId" value="<c:out value='${book.id}'/>" />
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

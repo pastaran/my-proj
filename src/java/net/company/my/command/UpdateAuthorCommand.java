@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.company.my.bean.Author;
 import net.company.my.logic.AdminLogic;
 import net.company.my.resource.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,6 +17,7 @@ public class UpdateAuthorCommand implements ActionCommand {
 
     private static final String PARAM_NAME_AUTHOR_ID = "authorId";
     private static final String PARAM_NAME_AUTHOR_NAME = "authorName";
+    static final Logger LOGGER = Logger.getLogger(UpdateAuthorCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -26,9 +28,16 @@ public class UpdateAuthorCommand implements ActionCommand {
 
         try {
             AdminLogic.updateAuthor(authorId, authorName);
+        } catch (SQLException e) {
+            LOGGER.error("Cannot update author", e);
+            return ConfigurationManager.getProperty("path.page.error");
+        }
+
+        try {
             authors = AdminLogic.showAuthors();
         } catch (SQLException e) {
-
+            LOGGER.error("Cannot show authors", e);
+            return ConfigurationManager.getProperty("path.page.error");
         }
 
         page = ConfigurationManager.getProperty("path.page.admin.authors");

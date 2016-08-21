@@ -9,7 +9,6 @@
 <html>
     <head>
         <title>Create author</title>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
         <script src="../../js/myScript.js"></script>
     </head>
     <body>

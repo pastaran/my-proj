@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.company.my.bean.Author;
 import net.company.my.logic.AdminLogic;
 import net.company.my.resource.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -15,6 +16,7 @@ import net.company.my.resource.ConfigurationManager;
 public class DeleteAuthorCommand implements ActionCommand {
 
     private static final String PARAM_NAME_AUTHOR_ID = "authorId";
+    static final Logger LOGGER = Logger.getLogger(DeleteAuthorCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -24,9 +26,16 @@ public class DeleteAuthorCommand implements ActionCommand {
 
         try {
             AdminLogic.deleteAuthor(authorId);
+        } catch (SQLException e) {
+            LOGGER.error("Cannot delete author", e);
+            return ConfigurationManager.getProperty("path.page.error");
+        }
+
+        try {
             authors = AdminLogic.showAuthors();
         } catch (SQLException e) {
-
+            LOGGER.error("Cannot show authors", e);
+            return ConfigurationManager.getProperty("path.page.error");
         }
 
         page = ConfigurationManager.getProperty("path.page.admin.authors");

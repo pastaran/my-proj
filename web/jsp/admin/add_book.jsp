@@ -5,11 +5,11 @@
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Create book</title>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
         <script src="../../js/myScript.js"></script>
     </head>
     <body>
@@ -19,16 +19,20 @@
             <input type="text" name="bookTitle" value="" maxlength="255" required/>
             <br/>
             Author:<br/>
-            <input type="text" name="bookAuthor" value="" required/>
+            <select name="authorId" required>
+                <c:forEach var="author" items="${authors}">
+                    <option value="<c:out value='${author.id}'/>"><c:out value="${author.name}"/></option>
+                </c:forEach>
+            </select>
             <br/>
             Year:<br/>
-            <input type="number" name="bookYear" value="" min="1901" max="2155" required/>
+            <input type="number" name="bookYear" value="2016" min="1901" max="2155" required/>
             <br/>
             Quantity total:<br/>
-            <input type="number" name="bookQtyTotal" value="" min="1" required/>
+            <input type="number" name="bookQtyTotal" value="1" min="1" required/>
             <br/>
             Quantity available:<br/>
-            <input type="text" name="bookQtyAvailable" value="" min="0" required/>
+            <input type="number" name="bookQtyAvailable" value="0" min="0" required/>
             <br/>
             <input type="submit" value="Submit"/>
         </form>

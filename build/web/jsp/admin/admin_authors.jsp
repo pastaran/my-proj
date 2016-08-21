@@ -28,14 +28,14 @@
                     <td>
                         <form name="goUpdateForm" method="POST" action="/MyLibrary/controller">
                             <input type="hidden" name="command" value="goupdateauthor" />
-                            <input type="hidden" name="authorId" value="${author.id}" />
+                            <input type="hidden" name="authorId" value="<c:out value='${author.id}'/>" />
                             <input type="submit" value="Update" />
                         </form>
                     </td>
                     <td>
                         <form name="deleteForm" method="POST" action="/MyLibrary/controller">
                             <input type="hidden" name="command" value="deleteauthor" />
-                            <input type="hidden" name="authorId" value="${author.id}" />
+                            <input type="hidden" name="authorId" value="<c:out value='${author.id}'/>" />
                             <input type="submit" value="Delete" />
                         </form>
                     </td>

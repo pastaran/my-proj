@@ -1,6 +1,7 @@
 package net.company.my.dao;
 
 import java.util.List;
+import net.company.my.bean.Author;
 import net.company.my.bean.Book;
 
 /**

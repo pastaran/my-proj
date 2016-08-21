@@ -39,8 +39,8 @@ public class MySQLOrderDAO implements OrderDAO {
 
         try {
             statement = connection.prepareStatement(ADD_ORDER);
-            statement.setInt(1, order.getBookId());
-            statement.setInt(2, order.getUserId());
+            statement.setInt(1, order.getBook().getId());
+            statement.setInt(2, order.getUser().getId());
             statement.setString(3, order.getDate());
             statement.setString(4, order.getOrderType().name());
             statement.setString(5, order.getStatusType().name());
@@ -61,6 +61,8 @@ public class MySQLOrderDAO implements OrderDAO {
     @Override
     public List<Order> findActiveOrders() {
         List<Order> orders = new ArrayList<>();
+        BookDAO bookDAO = new MySQLBookDAO(connection);
+        UserDAO userDAO = new MySQLUserDAO(connection);
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
@@ -73,10 +75,12 @@ public class MySQLOrderDAO implements OrderDAO {
             while (resultSet.next()) {
                 OrderType orderType = OrderType.valueOf(resultSet.getString(5).toUpperCase());
                 StatusType statusType = StatusType.valueOf(resultSet.getString(6).toUpperCase());
+                Book book = bookDAO.findBookById(resultSet.getInt(2));
+                User user = userDAO.findUserById(resultSet.getInt(3));
                 Order order = new Order();
                 order.setId(resultSet.getInt(1));
-                order.setBookId(resultSet.getInt(2));
-                order.setUserId(resultSet.getInt(3));
+                order.setBook(book);
+                order.setUser(user);
                 order.setDate(resultSet.getString(4));
                 order.setOrderType(orderType);
                 order.setStatusType(statusType);
@@ -99,6 +103,8 @@ public class MySQLOrderDAO implements OrderDAO {
     @Override
     public List<Order> findOrdersByUserId(int id) {
         List<Order> orders = new ArrayList<>();
+        BookDAO bookDAO = new MySQLBookDAO(connection);
+        UserDAO userDAO = new MySQLUserDAO(connection);
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
@@ -108,12 +114,14 @@ public class MySQLOrderDAO implements OrderDAO {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                OrderType orderType = OrderType.valueOf(resultSet.getString(4).toUpperCase());
-                StatusType statusType = StatusType.valueOf(resultSet.getString(5).toUpperCase());
+                OrderType orderType = OrderType.valueOf(resultSet.getString(5).toUpperCase());
+                StatusType statusType = StatusType.valueOf(resultSet.getString(6).toUpperCase());
+                Book book = bookDAO.findBookById(resultSet.getInt(2));
+                User user = userDAO.findUserById(resultSet.getInt(3));
                 Order order = new Order();
-                order.setId(resultSet.getInt(1));
-                order.setBookId(resultSet.getInt(2));
-                order.setUserId(resultSet.getInt(3));
+                order.setId(id);
+                order.setBook(book);
+                order.setUser(user);
                 order.setDate(resultSet.getString(4));
                 order.setOrderType(orderType);
                 order.setStatusType(statusType);

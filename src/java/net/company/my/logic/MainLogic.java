@@ -8,8 +8,11 @@ import net.company.my.bean.Book;
 import net.company.my.bean.Order;
 import net.company.my.bean.OrderType;
 import net.company.my.bean.StatusType;
+import net.company.my.bean.User;
+import net.company.my.dao.BookDAO;
 import net.company.my.dao.OrderDAO;
 import net.company.my.dao.SearchDAO;
+import net.company.my.dao.UserDAO;
 import net.company.my.dao.factory.DAOFactoryCreator;
 import net.company.my.pool.ConnectionPool;
 
@@ -21,7 +24,7 @@ public class MainLogic {
 
     public static List<Book> searchBooks(String title) throws SQLException {
         Connection connection = ConnectionPool.getConnection();
-        SearchDAO searchDAO = DAOFactoryCreator.getFactory("MYSQL").createSearchDAO(connection);
+        SearchDAO searchDAO = DAOFactoryCreator.getFactory().createSearchDAO(connection);
         List<Book> books = new ArrayList<>();
 
         try {
@@ -36,11 +39,16 @@ public class MainLogic {
     public static void orderBook(int bookId, int userId, String date,
             OrderType orderType) throws SQLException {
         Connection connection = ConnectionPool.getConnection();
-        OrderDAO orderDAO = DAOFactoryCreator.getFactory("MYSQL").createOrderDAO(connection);
+        OrderDAO orderDAO = DAOFactoryCreator.getFactory().createOrderDAO(connection);
+        BookDAO bookDAO = DAOFactoryCreator.getFactory().createBookDAO(connection);
+        UserDAO userDAO = DAOFactoryCreator.getFactory().createUserDAO(connection);
+
+        Book book = bookDAO.findBookById(bookId);
+        User user = userDAO.findUserById(userId);
 
         Order order = new Order();
-        order.setBookId(bookId);
-        order.setUserId(userId);
+        order.setBook(book);
+        order.setUser(user);
         order.setDate(date);
         order.setOrderType(orderType);
         order.setStatusType(StatusType.PLACED);

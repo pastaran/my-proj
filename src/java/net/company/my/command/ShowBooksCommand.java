@@ -3,19 +3,20 @@ package net.company.my.command;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import net.company.my.bean.Book;
 import net.company.my.bean.UserType;
 import net.company.my.logic.CommonLogic;
 import net.company.my.resource.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Kostya
  */
 public class ShowBooksCommand implements ActionCommand {
+
+    static final Logger LOGGER = Logger.getLogger(ShowBooksCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -24,8 +25,9 @@ public class ShowBooksCommand implements ActionCommand {
 
         try {
             books = CommonLogic.showBooks();
-        } catch (SQLException ex) {
-            Logger.getLogger(ShowBooksCommand.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            LOGGER.error("Cannot retrieve books", e);
+            return ConfigurationManager.getProperty("path.page.error");
         }
 
         UserType userType = (UserType) request.getSession().getAttribute("userType");

@@ -10,23 +10,34 @@
 <html>
     <head>
         <title>Main search</title>
+        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+        <script src="js/myScript.js"></script>
     </head>
     <body>
+        <button onclick="goBack()" class="margin_updown">Go Back</button>
+        <br />
         <table>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Available</th>
+            </tr>
             <c:forEach var="book" items="${books}">
                 <c:if test="${book.qtyAvailable > 0}">
                     <tr>
                         <td><c:out value="${book.title}"/></td>
                         <td><c:out value="${book.author.name}"/></td>
                         <td><c:out value="${book.year}"/></td>
-                        <td><c:out value="${book.qtyTotal}"/></td>
                         <td><c:out value="${book.qtyAvailable}"/></td>
                         <td>
                             <form name="orderForm" method="POST" action="/MyLibrary/controller">
                                 <input type="hidden" name="command" value="orderbook" />
-                                <input type="hidden" name="bookId" value="${book.id}" />
-                                <input type="radio" name="orderType" value="reading_room" checked />Reading-room
-                                <input type="radio" name="orderType" value="abonement" />Abonement
+                                <input type="hidden" name="bookId" value="<c:out value='${book.id}'/>" />
+                                <select name="orderType" required>
+                                    <option value="reading_room">Reading-room</option>
+                                    <option value="abonement">Abonement</option>
+                                </select>
                                 <input type="submit" value="Order book" />
                             </form>
                         </td>

@@ -17,7 +17,7 @@ public class CommonLogic {
 
     public static List<Book> showBooks() throws SQLException {
         Connection connection = ConnectionPool.getConnection();
-        BookDAO bookDAO = DAOFactoryCreator.getFactory("MYSQL").createBookDAO(connection);
+        BookDAO bookDAO = DAOFactoryCreator.getFactory().createBookDAO(connection);
         List<Book> books = new ArrayList<>();
 
         try {

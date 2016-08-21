@@ -19,5 +19,5 @@ public interface AuthorDAO {
 
     void updateAuthor(int id, String name);
     
-    void deleteAuthorById(int id);
+    void removeAuthorById(int id);
 }

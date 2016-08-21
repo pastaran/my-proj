@@ -10,14 +10,27 @@
 <html>
     <head>
         <title>Admin orders</title>
+        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+        <script src="js/myScript.js"></script>
     </head>
     <body>
+        <br/>
+        ${errorGiveBook}
+        <br/>
         <table>
+            <tr>
+                <th>Id</th>
+                <th>Book title</th>
+                <th>User name</th>
+                <th>Date</th>
+                <th>OrderType</th>
+                <th>StatusType</th>
+            </tr>
             <c:forEach var="order" items="${orders}">
                 <tr>
                     <td><c:out value="${order.id}"/></td>
-                    <td><c:out value="${order.bookId}"/></td>
-                    <td><c:out value="${order.userId}"/></td>
+                    <td><c:out value="${order.book.title}"/></td>
+                    <td><c:out value="${order.user.name}"/></td>
                     <td><c:out value="${order.date}"/></td>
                     <td><c:out value="${order.orderType}"/></td>
                     <td><c:out value="${order.statusType}"/></td>
@@ -25,8 +38,8 @@
                         <td>
                             <form name="giveForm" method="POST" action="/MyLibrary/controller">
                                 <input type="hidden" name="command" value="givebook" />
-                                <input type="hidden" name="orderId" value="${order.id}" />
-                                <input type="hidden" name="bookId" value="${order.bookId}" />
+                                <input type="hidden" name="orderId" value="<c:out value='${order.id}'/>" />
+                                <input type="hidden" name="bookId" value="<c:out value='${order.book.id}'/>" />
                                 <input type="submit" value="Give book" />
                             </form>
                         </td>
@@ -35,8 +48,8 @@
                         <td>
                             <form name="returnForm" method="POST" action="/MyLibrary/controller">
                                 <input type="hidden" name="command" value="returnbook" />
-                                <input type="hidden" name="orderId" value="${order.id}" />
-                                <input type="hidden" name="bookId" value="${order.bookId}" />
+                                <input type="hidden" name="orderId" value="<c:out value='${order.id}'/>" />
+                                <input type="hidden" name="bookId" value="<c:out value='${order.book.id}'/>" />
                                 <input type="submit" value="Return book" />
                             </form>
                         </td>

@@ -19,7 +19,7 @@ public class MySQLUserDAO implements UserDAO {
     private Connection connection;
     private static final String ADD_USER = "INSERT INTO user(name, email, password, user_type) "
             + "VALUES(?, ?, ?, ?)";
-    private static final String GET_ALL_USERS = "SELECT * FROM user";
+    private static final String GET_ALL_READERS = "SELECT * FROM user WHERE user_type = ?";
     private static final String GET_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?";
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id = ?";
     private static final String GET_USER_BY_LOGIN_AND_PASS = "SELECT * FROM user WHERE "
@@ -68,17 +68,17 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> findAllUsers(UserType userType) {
         List<User> users = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement(GET_ALL_USERS);
+            statement = connection.prepareStatement(GET_ALL_READERS);
+            statement.setString(1, userType.name());
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                UserType userType = UserType.valueOf(resultSet.getString(5).toUpperCase());
                 User user = new User();
                 user.setId(resultSet.getInt(1));
                 user.setName(resultSet.getString(2));

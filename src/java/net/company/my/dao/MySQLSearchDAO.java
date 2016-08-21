@@ -16,8 +16,8 @@ import net.company.my.bean.Book;
 public class MySQLSearchDAO implements SearchDAO {
 
     private Connection connection;
-    private static final String GET_BOOKS_BY_TITLE = "SELECT * FROM book WHERE "
-            + "title LIKE ?";
+    private static String GET_BOOKS_BY_TITLE = "SELECT * FROM book INNER JOIN author ON "
+            + "book.author_id = author.id WHERE author.name LIKE ? or book.title LIKE ?";
 
     public MySQLSearchDAO(Connection connection) {
         this.connection = connection;
@@ -33,6 +33,8 @@ public class MySQLSearchDAO implements SearchDAO {
         try {
             statement = connection.prepareStatement(GET_BOOKS_BY_TITLE);
             statement.setString(1, "%" + title + "%");
+            statement.setString(2, "%" + title + "%");
+
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

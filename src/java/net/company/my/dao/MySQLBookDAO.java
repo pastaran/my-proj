@@ -26,6 +26,8 @@ public class MySQLBookDAO implements BookDAO {
             + "qty_available = qty_available - 1 WHERE id = ? AND qty_available > 0";
     private static final String INCREMENT_BOOK_BY_ID = "UPDATE book SET "
             + "qty_available = qty_available + 1 WHERE id = ?";
+    private static final String UPDATE_BOOK = "UPDATE book SET title = ?, author_id = ?, "
+            + "year = ?, qty_total = ?, qty_available = ? WHERE id = ?";
 
     public MySQLBookDAO(Connection connection) {
         this.connection = connection;
@@ -201,5 +203,63 @@ public class MySQLBookDAO implements BookDAO {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void updateBook(int id, String title, int authorId, int year, int qtyTotal, int qtyAvailable) {
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(UPDATE_BOOK);
+            statement.setString(1, title);
+            statement.setInt(2, authorId);
+            statement.setInt(3, year);
+            statement.setInt(4, qtyTotal);
+            statement.setInt(5, qtyAvailable);
+            statement.setInt(6, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Override
+    public boolean checkBookIfAvailable(int id) {
+        boolean check = false;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement(GET_BOOK_BY_ID);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int qtyAvailable = resultSet.getInt(6);
+                if (qtyAvailable > 0) {
+                    check = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return check;
     }
 }

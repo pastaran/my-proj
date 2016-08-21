@@ -5,6 +5,7 @@
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,8 +16,8 @@
         <form name="updateAuthorForm" method="POST" action="/MyLibrary/controller">
             <input type="hidden" name="command" value="updateauthor" />
             Author name:<br/>
-            <input type="text" name="authorName" value="${author.name}" maxlength="64" required/>
-            <input type="hidden" name="authorId" value="${author.id}" />
+            <input type="text" name="authorName" value="<c:out value='${author.name}'/>" maxlength="64" required/>
+            <input type="hidden" name="authorId" value="<c:out value='${author.id}'/>" />
             <br/>
             <input type="submit" value="Update"/>
         </form>

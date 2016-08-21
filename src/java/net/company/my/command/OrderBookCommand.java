@@ -4,12 +4,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
-import net.company.my.bean.Book;
 import net.company.my.bean.OrderType;
-import net.company.my.bean.StatusType;
-import net.company.my.bean.User;
 import net.company.my.logic.MainLogic;
 import net.company.my.resource.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -20,6 +18,7 @@ public class OrderBookCommand implements ActionCommand {
     private static final String PARAM_NAME_BOOK_ID = "bookId";
     private static final String PARAM_NAME_USER_ID = "userId";
     private static final String PARAM_NAME_ORDER_TYPE = "orderType";
+    static final Logger LOGGER = Logger.getLogger(OrderBookCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -34,10 +33,11 @@ public class OrderBookCommand implements ActionCommand {
         try {
             MainLogic.orderBook(bookId, userId, currentTime, orderType);
         } catch (SQLException e) {
-
+            LOGGER.error("Cannot order book", e);
+            return ConfigurationManager.getProperty("path.page.error");
         }
 
-        page = ConfigurationManager.getProperty("path.page.order.success");
+        page = ConfigurationManager.getProperty("path.page.main");
 
         return page;
     }

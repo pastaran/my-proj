@@ -2,6 +2,7 @@ package net.company.my.dao;
 
 import java.util.List;
 import net.company.my.bean.User;
+import net.company.my.bean.UserType;
 
 /**
  *
@@ -11,7 +12,7 @@ public interface UserDAO {
 
     int addUser(User user);
 
-    List<User> findAllUsers();
+    List<User> findAllUsers(UserType userType);
 
     User findUserByEmail(String email);
 
